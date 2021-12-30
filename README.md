@@ -11,7 +11,7 @@ chmod +x install.sh
 ```
 
 ## Does it Work?
-AFAIK everything is working fine except some functionality need to need to be run as root
+AFAIK everything is working fine except some functionalities need to be run as root
 
 ## How did you get it working?
 There's a patch file included in this repo with the changes needed to make work you can check it

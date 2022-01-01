@@ -78,7 +78,7 @@ function install_dep {
 }
 
 msg "Installing build essentials and INDILib dependencies"
-# install_dep
+install_dep
 
 if [ -d "$LIB_NOVA_DIR" ]; then
   msg "$LIB_NOVA_DIR already exist skipping cloning"

@@ -1,6 +1,7 @@
 # termux-indilib
 
-#### Note: this is just a POC dont expect to get full functionality since Android has limited linux compatibility
+## Note
+Root is required to run execute indiserver with drivers
 
 ## Installation
 ```bash
@@ -10,11 +11,14 @@ chmod +x install.sh
 ./install.sh
 ```
 
-## Does it Work?
-AFAIK everything is working fine except some functionalities need to be run as root
+## Udev rules
+Android does not support udev rules, you need to execute them manually
 
-## How did you get it working?
-There's a patch file included in this repo with the changes needed to make work you can check it
+Set the memory limit for usbfs
+```bash
+pkg in tsu
+sudo echo 200 > /sys/module/usbcore/parameters/usbfs_memory_mb
+```
 
 ## 3rd Party drivers support
 Driver | Supported | Tested | Working
@@ -63,8 +67,8 @@ SV305 Camera | no | no | no
 Bresser Exos 2 GoTo Mount | yes | no | no 
 Player One Astronomy's Camera | no | no | no 
 
-## Another note
-You can create an issue with the problem you're facing so we can fix it
+## How does it work?
+There's a patch file included in this repo with the needed changes to makes work
 
 ## Links
 [Termux](https://termux.com)

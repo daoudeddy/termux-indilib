@@ -1,4 +1,4 @@
-# termux-indilib
+# Run INDI Lib on Termux
 
 ## Note
 Root is required to run execute indiserver with drivers

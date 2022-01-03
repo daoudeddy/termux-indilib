@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index cde6781..0388c6d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -122,7 +122,7 @@ include(MacroOptionalFindPackage)
+ # Math library check
+ 
+ if(NOT WIN32)
+-    FIND_LIBRARY(MATH_LIBRARY m)
++    set(MATH_LIBRARY -lm)
+ endif()
+ 
+ # LCMS version 1 and 2 library check

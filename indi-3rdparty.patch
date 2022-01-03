@@ -1,0 +1,108 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b1ae6e3..ae233a5 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -67,7 +67,7 @@ option(WITH_EQMOD "Install EQMod Driver" On)
+ option(WITH_STARBOOK "Install Starbook Driver" On)
+ option(WITH_STARBOOK_TEN "Install Starbook Ten Driver" On)
+ option(WITH_CAUX "Install Celestron AUX Driver" On)
+-option(WITH_SX "Install StarLight Xpress Driver" On)
++option(WITH_SX "Install StarLight Xpress Driver" Off)
+ option(WITH_MAXDOME "Install MaxDomeII Driver" On)
+ option(WITH_NEXDOME "Install NexDome Driver" On)
+ option(WITH_SPECTRACYBER "Install Spectracyber Driver" On)
+@@ -75,41 +75,41 @@ option(WITH_CLOUDWATCHER "Install AAG Cloud Watcher Driver" On)
+ option(WITH_MI "Install Moravian Driver" On)
+ option(WITH_FLI "Install FLI Driver" On)
+ option(WITH_SBIG "Install SBIG Driver" On)
+-option(WITH_INOVAPLX "Install i.Nova PLx Driver" On)
++option(WITH_INOVAPLX "Install i.Nova PLx Driver" Off)
+ option(WITH_APOGEE "Install Apogee Driver" On)
+-option(WITH_FFMV "Install Point Grey FireFly MV Driver" On)
++option(WITH_FFMV "Install Point Grey FireFly MV Driver" Off)
+ option(WITH_QHY "Install QHY Driver" On)
+ option(WITH_GPHOTO "Install GPhoto Driver" On)
+ option(WITH_QSI "Install QSI Driver" On)
+ option(WITH_DUINO "Install Ariduino Driver" On)
+ option(WITH_FISHCAMP "Install Fishcamp Driver" On)
+-option(WITH_GPSD "Install GPSD Driver" On)
++option(WITH_GPSD "Install GPSD Driver" Off)
+ option(WITH_GIGE "Install GiGE machine vision Driver" Off)
+ option(WITH_DSI "Install Meade DSI Driver" On)
+-option(WITH_ASICAM "Install ZWO Optics ASI Driver" On)
+-option(WITH_MGEN "Install MGen Autoguider" On)
++option(WITH_ASICAM "Install ZWO Optics ASI Driver" Off)
++option(WITH_MGEN "Install MGen Autoguider" Off)
+ option(WITH_ASTROMECHFOC "Install Astromechanics Focuser" On)
+ option(WITH_LIMESDR "Install LIME-SDR Receiver" On)
+ option(WITH_RADIOSIM "Install RadioSim Receiver" On)
+-option(WITH_GPSNMEA "Install GPS NMEA Driver" On)
+-option(WITH_RTKLIB "Install RTKLIB Driver" On)
++option(WITH_GPSNMEA "Install GPS NMEA Driver" Off)
++option(WITH_RTKLIB "Install RTKLIB Driver" Off)
+ option(WITH_ARMADILLO "Install Armadillo & Platypus Driver" On)
+ option(WITH_NIGHTSCAPE "Install Nightscape 8300 Driver" On)
+-option(WITH_ATIK "Install Atik Driver" On)
+-option(WITH_TOUPBASE "Install Toupbase Driver" On)
++option(WITH_ATIK "Install Atik Driver" Off)
++option(WITH_TOUPBASE "Install Toupbase Driver" Off)
+ option(WITH_DREAMFOCUSER "Install DreamFocuser Driver" On)
+ option(WITH_AVALON "Install Avalon StarGO Driver" On)
+ option(WITH_BEEFOCUS "Install Bee Focuser Driver" On)
+ option(WITH_SHELYAK "Install Shelyak Spectrograph Driver" On)
+ option(WITH_SKYWALKER "Install AOK SkyWalker Mount Driver" On)
+ option(WITH_TALON6 "Install Talon6 Mount Driver" On)
+-option(WITH_PENTAX "Install Pentax Driver" On)
+-option(WITH_ASTROLINK4 "Install AstroLink4 Driver" On)
+-option(WITH_AHP_XC "Install AHP XC Correlators Driver" On)
++option(WITH_PENTAX "Install Pentax Driver" Off)
++option(WITH_ASTROLINK4 "Install AstroLink4 Driver" Off)
++option(WITH_AHP_XC "Install AHP XC Correlators Driver" Off)
+ option(WITH_ORION_SSG3 "Install Orion StarShoot G3 Driver" On)
+-option(WITH_SV305 "Install SVBONY SV305 Camera Driver" On)
++option(WITH_SV305 "Install SVBONY SV305 Camera Driver" Off)
+ option(WITH_BRESSEREXOS2 "Install Bresser Exos 2 GoTo Mount Driver" On)
+-option(WITH_PLAYERONE "Install Player One Astronomy's Camera Driver" On)
++option(WITH_PLAYERONE "Install Player One Astronomy's Camera Driver" Off)
+ 
+ # FFMPEG required for INDI Webcam driver
+ find_package(FFmpeg)
+diff --git a/cmake_modules/CMakeCommon.cmake b/cmake_modules/CMakeCommon.cmake
+index b7be23d..97e06af 100644
+--- a/cmake_modules/CMakeCommon.cmake
++++ b/cmake_modules/CMakeCommon.cmake
+@@ -48,7 +48,7 @@ IF (UNIX OR APPLE OR ANDROID)
+     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SEC_COMP_FLAGS}")
+     SET(SEC_LINK_FLAGS "")
+     IF (NOT APPLE AND NOT CYGWIN)
+-        SET(SEC_LINK_FLAGS "${SEC_LINK_FLAGS} -Wl,-z,nodump -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now")
++        SET(SEC_LINK_FLAGS "${SEC_LINK_FLAGS}  -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,--no-as-needed -landroid-wordexp")
+     ENDIF ()
+     IF (NOT ANDROID AND NOT APPLE)
+         SET(SEC_LINK_FLAGS "${SEC_LINK_FLAGS} -pie")
+diff --git a/indi-nightscape/nightscape.cpp b/indi-nightscape/nightscape.cpp
+index d6564ad..ffe1e51 100644
+--- a/indi-nightscape/nightscape.cpp
++++ b/indi-nightscape/nightscape.cpp
+@@ -21,7 +21,7 @@
+ #ifdef _DARWIN_C_SOURCE
+ #define ___secure_getenv getenv
+ #else
+-#define ___secure_getenv secure_getenv
++#define ___secure_getenv getenv
+ #endif
+ 
+ #include "nightscape.h"
+diff --git a/libqhy/CMakeLists.txt b/libqhy/CMakeLists.txt
+index 04dc8f5..2d7bd8a 100644
+--- a/libqhy/CMakeLists.txt
++++ b/libqhy/CMakeLists.txt
+@@ -50,7 +50,7 @@ elseif (UNIX AND NOT WIN32)
+ 
+   # Install udev rules
+   set (UDEVRULES_INSTALL_DIR "/lib/udev/rules.d" CACHE STRING "Base directory for udev rules")
+-  install (FILES 85-qhyccd.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
++  # install (FILES 85-qhyccd.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
+ 
+ endif ()
+ 

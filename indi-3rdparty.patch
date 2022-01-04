@@ -1,51 +1,53 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b1ae6e3..ae233a5 100644
+index b1ae6e3..d46e241 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -67,7 +67,7 @@ option(WITH_EQMOD "Install EQMod Driver" On)
+@@ -18,6 +18,11 @@ include_directories( "/usr/local/include")
+ include_directories("${CMAKE_INSTALL_PREFIX}/include")
+ endif(APPLE)
+ 
++if(ANDROID OR "${CMAKE_SYSTEM_NAME}" STREQUAL "Android")
++  set(ANDROID ON)
++  add_definitions(-DANDROID)
++endif()
++
+ set(LIBRARIES_FOUND TRUE)
+ 
+ include(CMakeCommon)
+@@ -67,7 +72,6 @@ option(WITH_EQMOD "Install EQMod Driver" On)
  option(WITH_STARBOOK "Install Starbook Driver" On)
  option(WITH_STARBOOK_TEN "Install Starbook Ten Driver" On)
  option(WITH_CAUX "Install Celestron AUX Driver" On)
 -option(WITH_SX "Install StarLight Xpress Driver" On)
-+option(WITH_SX "Install StarLight Xpress Driver" Off)
  option(WITH_MAXDOME "Install MaxDomeII Driver" On)
  option(WITH_NEXDOME "Install NexDome Driver" On)
  option(WITH_SPECTRACYBER "Install Spectracyber Driver" On)
-@@ -75,41 +75,41 @@ option(WITH_CLOUDWATCHER "Install AAG Cloud Watcher Driver" On)
+@@ -75,41 +79,45 @@ option(WITH_CLOUDWATCHER "Install AAG Cloud Watcher Driver" On)
  option(WITH_MI "Install Moravian Driver" On)
  option(WITH_FLI "Install FLI Driver" On)
  option(WITH_SBIG "Install SBIG Driver" On)
 -option(WITH_INOVAPLX "Install i.Nova PLx Driver" On)
-+option(WITH_INOVAPLX "Install i.Nova PLx Driver" Off)
  option(WITH_APOGEE "Install Apogee Driver" On)
 -option(WITH_FFMV "Install Point Grey FireFly MV Driver" On)
-+option(WITH_FFMV "Install Point Grey FireFly MV Driver" Off)
  option(WITH_QHY "Install QHY Driver" On)
  option(WITH_GPHOTO "Install GPhoto Driver" On)
  option(WITH_QSI "Install QSI Driver" On)
  option(WITH_DUINO "Install Ariduino Driver" On)
  option(WITH_FISHCAMP "Install Fishcamp Driver" On)
 -option(WITH_GPSD "Install GPSD Driver" On)
-+option(WITH_GPSD "Install GPSD Driver" Off)
- option(WITH_GIGE "Install GiGE machine vision Driver" Off)
+-option(WITH_GIGE "Install GiGE machine vision Driver" Off)
  option(WITH_DSI "Install Meade DSI Driver" On)
 -option(WITH_ASICAM "Install ZWO Optics ASI Driver" On)
 -option(WITH_MGEN "Install MGen Autoguider" On)
-+option(WITH_ASICAM "Install ZWO Optics ASI Driver" Off)
-+option(WITH_MGEN "Install MGen Autoguider" Off)
  option(WITH_ASTROMECHFOC "Install Astromechanics Focuser" On)
  option(WITH_LIMESDR "Install LIME-SDR Receiver" On)
  option(WITH_RADIOSIM "Install RadioSim Receiver" On)
 -option(WITH_GPSNMEA "Install GPS NMEA Driver" On)
 -option(WITH_RTKLIB "Install RTKLIB Driver" On)
-+option(WITH_GPSNMEA "Install GPS NMEA Driver" Off)
-+option(WITH_RTKLIB "Install RTKLIB Driver" Off)
  option(WITH_ARMADILLO "Install Armadillo & Platypus Driver" On)
  option(WITH_NIGHTSCAPE "Install Nightscape 8300 Driver" On)
 -option(WITH_ATIK "Install Atik Driver" On)
 -option(WITH_TOUPBASE "Install Toupbase Driver" On)
-+option(WITH_ATIK "Install Atik Driver" Off)
-+option(WITH_TOUPBASE "Install Toupbase Driver" Off)
  option(WITH_DREAMFOCUSER "Install DreamFocuser Driver" On)
  option(WITH_AVALON "Install Avalon StarGO Driver" On)
  option(WITH_BEEFOCUS "Install Bee Focuser Driver" On)
@@ -55,54 +57,163 @@ index b1ae6e3..ae233a5 100644
 -option(WITH_PENTAX "Install Pentax Driver" On)
 -option(WITH_ASTROLINK4 "Install AstroLink4 Driver" On)
 -option(WITH_AHP_XC "Install AHP XC Correlators Driver" On)
-+option(WITH_PENTAX "Install Pentax Driver" Off)
-+option(WITH_ASTROLINK4 "Install AstroLink4 Driver" Off)
-+option(WITH_AHP_XC "Install AHP XC Correlators Driver" Off)
  option(WITH_ORION_SSG3 "Install Orion StarShoot G3 Driver" On)
 -option(WITH_SV305 "Install SVBONY SV305 Camera Driver" On)
-+option(WITH_SV305 "Install SVBONY SV305 Camera Driver" Off)
  option(WITH_BRESSEREXOS2 "Install Bresser Exos 2 GoTo Mount Driver" On)
 -option(WITH_PLAYERONE "Install Player One Astronomy's Camera Driver" On)
-+option(WITH_PLAYERONE "Install Player One Astronomy's Camera Driver" Off)
++
++if(ANDROID)
++  option(WITH_SX "Install StarLight Xpress Driver" Off)
++  option(WITH_INOVAPLX "Install i.Nova PLx Driver" Off)
++  option(WITH_FFMV "Install Point Grey FireFly MV Driver" Off)
++  option(WITH_GIGE "Install GiGE machine vision Driver" Off)
++  option(WITH_GPSD "Install GPSD Driver" Off)
++  option(WITH_ASICAM "Install ZWO Optics ASI Driver" Off)
++  option(WITH_MGEN "Install MGen Autoguider" Off)
++  option(WITH_GPSNMEA "Install GPS NMEA Driver" Off)
++  option(WITH_RTKLIB "Install RTKLIB Driver" Off)
++  option(WITH_TOUPBASE "Install Toupbase Driver" Off)
++  option(WITH_ATIK "Install Atik Driver" Off)
++  option(WITH_PENTAX "Install Pentax Driver" Off)
++  option(WITH_ASTROLINK4 "Install AstroLink4 Driver" Off)
++  option(WITH_AHP_XC "Install AHP XC Correlators Driver" Off)
++  option(WITH_SV305 "Install SVBONY SV305 Camera Driver" Off)
++  option(WITH_PLAYERONE "Install Player One Astronomy's Camera Driver" Off)
++endif(ANDROID)
  
  # FFMPEG required for INDI Webcam driver
  find_package(FFmpeg)
 diff --git a/cmake_modules/CMakeCommon.cmake b/cmake_modules/CMakeCommon.cmake
-index b7be23d..97e06af 100644
+index b7be23d..345cd61 100644
 --- a/cmake_modules/CMakeCommon.cmake
 +++ b/cmake_modules/CMakeCommon.cmake
-@@ -48,7 +48,7 @@ IF (UNIX OR APPLE OR ANDROID)
+@@ -47,8 +47,10 @@ IF (UNIX OR APPLE OR ANDROID)
+     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SEC_COMP_FLAGS}")
      SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SEC_COMP_FLAGS}")
      SET(SEC_LINK_FLAGS "")
-     IF (NOT APPLE AND NOT CYGWIN)
--        SET(SEC_LINK_FLAGS "${SEC_LINK_FLAGS} -Wl,-z,nodump -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now")
+-    IF (NOT APPLE AND NOT CYGWIN)
++    IF (NOT APPLE AND NOT CYGWIN AND NOT ANDROID)
+         SET(SEC_LINK_FLAGS "${SEC_LINK_FLAGS} -Wl,-z,nodump -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now")
++    ELSEIF(ANDROID)
 +        SET(SEC_LINK_FLAGS "${SEC_LINK_FLAGS}  -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,--no-as-needed -landroid-wordexp")
      ENDIF ()
      IF (NOT ANDROID AND NOT APPLE)
          SET(SEC_LINK_FLAGS "${SEC_LINK_FLAGS} -pie")
+diff --git a/indi-dsi/CMakeLists.txt b/indi-dsi/CMakeLists.txt
+index 5924d1d..1c386be 100644
+--- a/indi-dsi/CMakeLists.txt
++++ b/indi-dsi/CMakeLists.txt
+@@ -7,7 +7,9 @@ include(GNUInstallDirs)
+ 
+ IF(APPLE)
+ set(FIRMWARE_INSTALL_DIR "/usr/local/lib/indi/DriverSupport/dsi")
+-ELSE(APPLE)
++ELSEIF(ANDROID)
++set(FIRMWARE_INSTALL_DIR "/data/data/com.termux/files/usr/lib/firmware")
++ELSE(ANDROID)
+ set(RULES_INSTALL_DIR "/lib/udev/rules.d")
+ set(FIRMWARE_INSTALL_DIR "/lib/firmware")
+ ENDIF()
+diff --git a/indi-gphoto/CMakeLists.txt b/indi-gphoto/CMakeLists.txt
+index 92f76b6..73822bc 100644
+--- a/indi-gphoto/CMakeLists.txt
++++ b/indi-gphoto/CMakeLists.txt
+@@ -115,6 +115,6 @@ set_target_properties(indi_gphoto_ccd PROPERTIES POST_INSTALL_SCRIPT ${CMAKE_CUR
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/indi_gphoto.xml DESTINATION ${INDI_DATA_DIR})
+ 
+ # Disable automount for DSLR cameras
+-IF (UNIX AND NOT APPLE)
++IF (UNIX AND NOT APPLE AND NOT ANDROID)
+     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/85-disable-dslr-automout.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
+ ENDIF ()
 diff --git a/indi-nightscape/nightscape.cpp b/indi-nightscape/nightscape.cpp
-index d6564ad..ffe1e51 100644
+index d6564ad..b1d4d50 100644
 --- a/indi-nightscape/nightscape.cpp
 +++ b/indi-nightscape/nightscape.cpp
-@@ -21,7 +21,7 @@
- #ifdef _DARWIN_C_SOURCE
+@@ -18,7 +18,7 @@
+ */
+ 
+ 
+-#ifdef _DARWIN_C_SOURCE
++#if defined(_DARWIN_C_SOURCE_) || defined(__ANDROID__)
  #define ___secure_getenv getenv
  #else
--#define ___secure_getenv secure_getenv
-+#define ___secure_getenv getenv
- #endif
+ #define ___secure_getenv secure_getenv
+diff --git a/libapogee/CMakeLists.txt b/libapogee/CMakeLists.txt
+index e9d60d2..a5c707b 100644
+--- a/libapogee/CMakeLists.txt
++++ b/libapogee/CMakeLists.txt
+@@ -12,7 +12,9 @@ set(APOGEE_SOVERSION "3")
  
- #include "nightscape.h"
+ IF(APPLE)
+ set(CONF_DIR "/usr/local/lib/indi/DriverSupport/" CACHE STRING "Base configuration directory")
+-ELSE(APPLE)
++ELSEIF(ANDROID)
++set(CONF_DIR "/data/data/com.termux/files/usr/etc" CACHE STRING "Base configuration directory")
++ELSE(ANDROID)
+ set(CONF_DIR "/etc" CACHE STRING "Base configuration directory")
+ set(UDEVRULES_INSTALL_DIR "/lib/udev/rules.d" CACHE STRING "Base directory for udev rules")
+ ENDIF()
+@@ -62,6 +64,6 @@ install(
+    file(INSTALL DESTINATION ${CONF_DIR}/Apogee/camera TYPE FILE FILES \${APOGEE_CONF})"
+  )
+ 
+-IF (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
++IF (${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ANDROID)
+ install(FILES 99-apogee.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
+ ENDIF()
+diff --git a/libfishcamp/CMakeLists.txt b/libfishcamp/CMakeLists.txt
+index 4f9fa7b..850c833 100644
+--- a/libfishcamp/CMakeLists.txt
++++ b/libfishcamp/CMakeLists.txt
+@@ -15,7 +15,9 @@ set(FIRMWARE_INSTALL_DIR "/usr/local/lib/indi/DriverSupport/fishcamp")
+ include_directories( "/usr/local/include")
+     ## This one is needed for Craft
+ include_directories("${CMAKE_INSTALL_PREFIX}/include")
+-ELSE(APPLE)
++ELSEIF(ANDROID)
++set(FIRMWARE_INSTALL_DIR "/data/data/com.termux/files/usr/lib/firmware")
++ELSE(ANDROID)
+ set(FIRMWARE_INSTALL_DIR "/lib/firmware")
+ set(UDEVRULES_INSTALL_DIR "/lib/udev/rules.d" CACHE STRING "Base directory for udev rules")
+ ENDIF(APPLE)
+@@ -43,7 +45,7 @@ INSTALL(FILES fishcamp.h fishcamp_common.h DESTINATION include/libfishcamp)
+ INSTALL(TARGETS fishcamp LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+ 
+ install( FILES gdr_usb.hex Guider_mono_rev16_intel.srec DESTINATION ${FIRMWARE_INSTALL_DIR})
+-IF(NOT APPLE)
++IF(NOT APPLE AND NOT ANDROID)
+ install(FILES 99-fishcamp.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
+-ENDIF(NOT APPLE)
++ENDIF(NOT APPLE AND NOT ANDROID)
+ 
 diff --git a/libqhy/CMakeLists.txt b/libqhy/CMakeLists.txt
-index 04dc8f5..2d7bd8a 100644
+index 04dc8f5..39350ce 100644
 --- a/libqhy/CMakeLists.txt
 +++ b/libqhy/CMakeLists.txt
-@@ -50,7 +50,7 @@ elseif (UNIX AND NOT WIN32)
+@@ -36,7 +36,11 @@ if (APPLE)
+ 
+ elseif (UNIX AND NOT WIN32)
+ 
+-  set (FIRMWARE_INSTALL_DIR "/lib/firmware/qhy" CACHE STRING "QHY firmware installation directory")
++  if(ANDROID)
++    set (FIRMWARE_INSTALL_DIR "/data/data/com.termux/files/usr/lib/firmware/qhy" CACHE STRING "QHY firmware installation directory")
++  else(ANDROID)
++    set (FIRMWARE_INSTALL_DIR "/lib/firmware/qhy" CACHE STRING "QHY firmware installation directory")
++  endif()
+ 
+   if (CMAKE_SYSTEM_PROCESSOR MATCHES "armv+")
+     set_property (TARGET qhyccd PROPERTY IMPORTED_LOCATION "libqhyccd_armv6.bin")
+@@ -49,8 +53,10 @@ elseif (UNIX AND NOT WIN32)
+   endif ()
  
    # Install udev rules
-   set (UDEVRULES_INSTALL_DIR "/lib/udev/rules.d" CACHE STRING "Base directory for udev rules")
+-  set (UDEVRULES_INSTALL_DIR "/lib/udev/rules.d" CACHE STRING "Base directory for udev rules")
 -  install (FILES 85-qhyccd.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
-+  # install (FILES 85-qhyccd.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
++  if (NOT ANDROID)
++    set (UDEVRULES_INSTALL_DIR "/lib/udev/rules.d" CACHE STRING "Base directory for udev rules")
++    install (FILES 85-qhyccd.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
++  endif()
  
  endif ()
  

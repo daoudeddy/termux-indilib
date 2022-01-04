@@ -1,0 +1,12 @@
+diff --git a/configure.ac b/configure.ac
+index 15f4f7e..d45fa7f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -25,6 +25,7 @@ AC_SUBST(LT_RELEASE)
+ VERSION=$LIBNOVA_VERSION
+ PACKAGE=libnova
+ 
++AC_CONFIG_AUX_DIR([.])
+ AM_INIT_AUTOMAKE([foreign 1.11 -Wall -Wno-portability silent-rules tar-pax])
+ 
+ # Specify a configuration file

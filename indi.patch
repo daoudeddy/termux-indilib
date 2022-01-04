@@ -86,9 +86,9 @@ diff --git a/libs/indibase/connectionplugins/connectiontcp.cpp b/libs/indibase/c
 index 44ba96d..24b9a36 100644
 --- a/libs/indibase/connectionplugins/connectiontcp.cpp
 +++ b/libs/indibase/connectionplugins/connectiontcp.cpp
-@@ -26,7 +26,7 @@
- #include <cstring>
+@@ -31,7 +31,7 @@
  #include <unistd.h>
+ #include <regex>
  
 -#ifdef __FreeBSD__
 +#if defined(__FreeBSD__) || defined(__ANDROID__)

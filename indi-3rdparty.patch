@@ -126,6 +126,32 @@ index 92f76b6..73822bc 100644
 +IF (UNIX AND NOT APPLE AND NOT ANDROID)
      install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/85-disable-dslr-automout.rules DESTINATION ${UDEVRULES_INSTALL_DIR})
  ENDIF ()
+diff --git a/indi-gphoto/gphoto_ccd.cpp b/indi-gphoto/gphoto_ccd.cpp
+index bed27c2..a40c327 100644
+--- a/indi-gphoto/gphoto_ccd.cpp
++++ b/indi-gphoto/gphoto_ccd.cpp
+@@ -42,6 +42,12 @@
+ #define FOCUS_TIMER  50
+ #define MAX_RETRIES  3
+ 
++#ifdef ANDROID
++#define TMP_DIR      "/data/local/tmp"
++#else
++#define TMP_DIR      "/tmp"
++#endif
++
+ extern char * __progname;
+ 
+ 
+@@ -1232,7 +1238,7 @@ bool GPhotoCCD::grabImage()
+     }
+     else if (TransferFormatS[FORMAT_FITS].s == ISS_ON)
+     {
+-        char filename[MAXRBUF] = "/tmp/indi_XXXXXX";
++        char filename[MAXRBUF] = TMP_DIR "/indi_XXXXXX";
+         const char *extension = "unknown";
+         if (isSimulation())
+         {
 diff --git a/indi-nightscape/nightscape.cpp b/indi-nightscape/nightscape.cpp
 index d6564ad..b1d4d50 100644
 --- a/indi-nightscape/nightscape.cpp

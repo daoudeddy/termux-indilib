@@ -82,7 +82,7 @@ function configure_and_build {
 }
 
 function install_dep {
-  pkg up && pkg in -y git \
+  pkg up -y && pkg in -y git \
 	wget cmake make \
 	autoconf automake \
 	libtool binutils tar \
@@ -93,7 +93,7 @@ function install_dep {
 }
 
 msg "Installing build essentials and INDILib dependencies"
-#install_dep
+install_dep
 
 if [ -d "$LIBNOVA_DIR" ]; then
   msg "$LIBNOVA_DIR already exist skipping clone"
@@ -106,7 +106,7 @@ else
 fi
 
 msg "Building $LIBNOVA_DIR"
-#configure_and_build "$LIBNOVA_DIR" "autogen"
+configure_and_build "$LIBNOVA_DIR" "autogen"
 
 if [ -d "$CFITSIO_DIR" ]; then
   msg "$CFITSIO_DIR already exist skipping download"
@@ -120,7 +120,7 @@ else
 fi
 
 msg "Building $CFITSIO_DIR"
-#configure_and_build "$CFITSIO_DIR" "configure"
+configure_and_build "$CFITSIO_DIR" "configure"
 
 if [ -d "$LIBRAW_DIR" ]; then
   msg "$LIBRAW_DIR already exist skipping clone"
@@ -138,7 +138,7 @@ else
 fi
 
 msg "Building $LIBRAW_DIR"
-#configure_and_build "$LIBRAW_DIR" "cmake"
+configure_and_build "$LIBRAW_DIR" "cmake"
 
 if [ -d "$LIBGPHOTO_DIR" ]; then
   msg "$LIBGPHOTO_DIR already exist skipping clone"
@@ -151,7 +151,7 @@ else
 fi
 
 msg "Building $LIBGPHOTO_DIR"
-#configure_and_build "$LIBGPHOTO_DIR" "configure"
+configure_and_build "$LIBGPHOTO_DIR" "configure"
 
 if [ -d "$LIBFTDI_DIR" ]; then
   msg "$LIBFTDI_DIR already exist skipping clone"
@@ -161,7 +161,7 @@ else
 fi
 
 msg "Building $LIBFTDI_DIR"
-#configure_and_build "$LIBFTDI_DIR" "cmake"
+configure_and_build "$LIBFTDI_DIR" "cmake"
 
 if [ -d "$INDILIB_DIR" ]; then
   msg "$INDILIB_DIR already exist skipping clone"
@@ -174,7 +174,7 @@ else
 fi
 
 msg "Building $INDILIB_DIR"
-#configure_and_build "$INDILIB_DIR" "cmake"
+configure_and_build "$INDILIB_DIR" "cmake"
 
 if [ -d "$INDILIB_3P_DIR" ]; then
   msg "$INDILIB_3P_DIR already exist skipping clone"
